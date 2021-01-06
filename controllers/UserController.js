@@ -37,7 +37,7 @@ class UserController {
 
             this.getPhoto(this.formUpdateEl).then(
                 (content)=>{       
-                    
+                    //console.log(values.photo, values);
                     if(!values.photo){
                         result._photo = userOld._photo; 
                     } else {
@@ -45,7 +45,7 @@ class UserController {
                     }
 
                     tr.dataset.user = JSON.stringify(result);    
-
+                    //console.log(tr);
                     tr.innerHTML = `
                     <tr>
                         <td><img src="${result._photo}" alt="User Image" class="img-circle img-sm"></td>
@@ -62,7 +62,7 @@ class UserController {
                     this.addEventsTr(tr);
 
                     this.updateCount();
-                    
+
                     this.formUpdateEl.reset();
 
                     btn.disabled = false;
