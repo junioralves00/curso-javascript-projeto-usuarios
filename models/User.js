@@ -64,8 +64,7 @@ class User {
                   break;
                 default:
                     this[name] = json[name];
-            }
-            
+            }            
         }
     }
 }
