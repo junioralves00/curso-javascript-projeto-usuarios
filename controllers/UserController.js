@@ -49,6 +49,8 @@ class UserController {
 
                     user.loadFromJSON(result);
 
+                   user.save();
+
                     tr = this.getTr(user, tr);                    
                                    
                     this.addEventsTr(tr);
@@ -85,7 +87,7 @@ class UserController {
                 (content)=>{
                     values.photo = content;
 
-                    this.insert(values);
+                    values.save();
 
                     this.addLine(values);
 
@@ -169,26 +171,9 @@ class UserController {
         return new User(user.name, user.gender, user.birth, user.country, user.email, user.password, user.photo, user.admin);                
     }
 
-    getUsersStorage(){
-
-        let users = [];
-        //com session Storage
-        /* if(sessionStorage.getItem("users")){
-
-            users = JSON.parse(sessionStorage.getItem("users"));
-        } */
-
-        if(localStorage.getItem("users")){
-
-            users = JSON.parse(localStorage.getItem("users"));
-        }
-
-        return users;
-    }
-
     selectAll(){
 
-        let users = this.getUsersStorage();
+        let users = User.getUsersStorage();
 
         users.forEach(dataUser=>{
 
@@ -201,17 +186,7 @@ class UserController {
         });
     }
 
-    insert(data){
-
-        let users = this.getUsersStorage();
-
-        users.push(data);
-
-        //sessionStorage.setItem("users", JSON.stringify(users));
-        localStorage.setItem("users", JSON.stringify(users));
-    }
-
-//---Fechando metodo getValues
+  //---Fechando metodo getValues
     addLine(dataUser){
 
         let tr = this.getTr(dataUser);        
@@ -250,7 +225,15 @@ class UserController {
         tr.querySelector(".btn-delete").addEventListener("click", e => {
 
             if(confirm("Deseja realmente excluir?")){
+
+                let user = new User();
+
+                user.loadFromJSON(JSON.parse(tr.dataset.user));
+
+                user.remove();
+                
                 tr.remove();
+                
                 this.updateCount();
             }
         });
